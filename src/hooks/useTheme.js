@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 const STORAGE_KEY_DARK = 'portfolio_dark_mode';
 const STORAGE_KEY_COLOR = 'portfolio_skin_color';
-const DEFAULT_COLOR = '#ec1839';
+const DEFAULT_COLOR = '#1854b4';
 
 export function useTheme() {
   const [isDark, setIsDark] = useState(() => {
