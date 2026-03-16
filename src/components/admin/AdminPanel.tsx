@@ -21,7 +21,7 @@ const EMPTY_FORM = {
 
 type FormState = typeof EMPTY_FORM;
 
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
 export default function AdminPanel({
   projects,
