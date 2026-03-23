@@ -39,8 +39,10 @@ export default function AdminPanel({
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [editId, setEditId] = useState<string | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
-  const [formError, setFormError] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof FormState, boolean>>
+  >({});
 
   const handleLogin = useCallback(() => {
     if (password === ADMIN_PASSWORD) {
@@ -55,32 +57,27 @@ export default function AdminPanel({
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
       setForm((prev) => ({ ...prev, [name]: value }));
+      setErrors((prev) => ({ ...prev, [name]: false }));
     },
     [],
   );
 
   const validate = (f: FormState): boolean => {
-    if (!f.title.trim()) {
-      setFormError("Başlıq boş ola bilməz");
+    const newErrors: Partial<Record<keyof FormState, boolean>> = {};
+
+    if (!f.title.trim()) newErrors.title = true;
+    if (!f.description.trim()) newErrors.description = true;
+    if (!f.technologies.trim()) newErrors.technologies = true;
+    if (!f.githubLink.trim()) newErrors.githubLink = true;
+    if (!f.liveLink.trim()) newErrors.liveLink = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      toast.error("Zəhmət olmasa bütün məcburi sahələri doldurun.");
       return false;
     }
-    if (!f.description.trim()) {
-      setFormError("Açıqlama boş ola bilməz");
-      return false;
-    }
-    if (!f.technologies.trim()) {
-      setFormError("Texnologiyalar boş ola bilməz");
-      return false;
-    }
-    if (!f.githubLink.trim()) {
-      setFormError("GitHub linki boş ola bilməz");
-      return false;
-    }
-    if (!f.liveLink.trim()) {
-      setFormError("Live linki boş ola bilməz");
-      return false;
-    }
-    setFormError("");
+
+    setErrors({});
     return true;
   };
 
@@ -104,9 +101,11 @@ export default function AdminPanel({
 
       if (editId) {
         updateProject(editId, data);
+        toast.success("Layihə uğurla yeniləndi!");
         setEditId(null);
       } else {
         addProject(data);
+        toast.success("Layihə uğurla əlavə edildi!");
       }
 
       setForm(EMPTY_FORM);
@@ -133,9 +132,18 @@ export default function AdminPanel({
   const handleCancel = useCallback(() => {
     setForm(EMPTY_FORM);
     setEditId(null);
-    setFormError("");
+    setErrors({});
     setShowForm(false);
   }, []);
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      deleteProject(id);
+      setDeleteConfirmId(null);
+      toast.success("Layihə uğurla silindi!");
+    },
+    [deleteProject],
+  );
 
   if (!authed) {
     return (
@@ -200,7 +208,6 @@ export default function AdminPanel({
             <h3 className="admin-formTitle">
               {editId ? "Layihəni Redaktə Et" : "Yeni Layihə Əlavə Et"}
             </h3>
-            {formError && <p className="admin-error">{formError}</p>}
             <form onSubmit={handleSubmit} className="admin-form">
               <div className="admin-formRow">
                 <div className="admin-formGroup">
@@ -211,6 +218,7 @@ export default function AdminPanel({
                     onChange={handleChange}
                     placeholder="Məs: E-Commerce Website"
                     className="admin-input"
+                    style={errors.title ? { border: "1px solid #ec1839" } : {}}
                   />
                 </div>
                 <div className="admin-formGroup">
@@ -223,6 +231,9 @@ export default function AdminPanel({
                     onChange={handleChange}
                     placeholder="Məs: React, TypeScript, CSS"
                     className="admin-input"
+                    style={
+                      errors.technologies ? { border: "1px solid #ec1839" } : {}
+                    }
                   />
                 </div>
               </div>
@@ -236,6 +247,9 @@ export default function AdminPanel({
                   placeholder="Layihə haqqında qısa məlumat..."
                   className="admin-textarea"
                   rows={3}
+                  style={
+                    errors.description ? { border: "1px solid #ec1839" } : {}
+                  }
                 />
               </div>
 
@@ -248,6 +262,9 @@ export default function AdminPanel({
                     onChange={handleChange}
                     placeholder="https://github.com/..."
                     className="admin-input"
+                    style={
+                      errors.githubLink ? { border: "1px solid #ec1839" } : {}
+                    }
                   />
                 </div>
                 <div className="admin-formGroup">
@@ -258,6 +275,9 @@ export default function AdminPanel({
                     onChange={handleChange}
                     placeholder="https://..."
                     className="admin-input"
+                    style={
+                      errors.liveLink ? { border: "1px solid #ec1839" } : {}
+                    }
                   />
                 </div>
               </div>
@@ -371,10 +391,7 @@ export default function AdminPanel({
                             <div className="admin-confirmBox">
                               <span>Əminsiniz?</span>
                               <button
-                                onClick={() => {
-                                  deleteProject(project.id);
-                                  setDeleteConfirmId(null);
-                                }}
+                                onClick={() => handleDelete(project.id)}
                                 className="admin-btnDelete"
                               >
                                 Bəli
