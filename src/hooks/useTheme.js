@@ -18,13 +18,13 @@ export function useTheme() {
   // Apply dark class to <body>
   useEffect(() => {
     document.body.classList.toggle('dark', isDark);
-    try { localStorage.setItem(STORAGE_KEY_DARK, isDark); } catch { /* noop */ }
+    try { localStorage.setItem(STORAGE_KEY_DARK, isDark); } catch {}
   }, [isDark]);
 
   // Apply skin CSS variable to :root
   useEffect(() => {
     document.documentElement.style.setProperty('--skin-color', skinColor);
-    try { localStorage.setItem(STORAGE_KEY_COLOR, skinColor); } catch { /* noop */ }
+    try { localStorage.setItem(STORAGE_KEY_COLOR, skinColor); } catch {}
   }, [skinColor]);
 
   const toggleDark = useCallback(() => setIsDark((prev) => !prev), []);

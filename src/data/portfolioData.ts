@@ -111,7 +111,7 @@ export const services: Service[] = [
 // Portfolio Items
 export const portfolioItems: PortfolioItem[] = [
   {
-    id: 1,
+    id: "1",
     image: portfolio1,
     alt: "Project 1",
     title: "E-Commerce Website",
@@ -122,7 +122,7 @@ export const portfolioItems: PortfolioItem[] = [
     liveLink: "https://example.com",
   },
   {
-    id: 2,
+    id: "2",
     image: portfolio2,
     alt: "Project 2",
     title: "Portfolio Website",
@@ -132,7 +132,7 @@ export const portfolioItems: PortfolioItem[] = [
     liveLink: "https://example.com",
   },
   {
-    id: 3,
+    id: "3",
     image: portfolio3,
     alt: "Project 3",
     title: "Restaurant Landing Page",
@@ -142,7 +142,7 @@ export const portfolioItems: PortfolioItem[] = [
     liveLink: "https://example.com",
   },
   {
-    id: 4,
+    id: "4",
     image: portfolio4,
     alt: "Project 4",
     title: "Logo Design",
@@ -152,7 +152,7 @@ export const portfolioItems: PortfolioItem[] = [
     liveLink: "https://example.com",
   },
   {
-    id: 5,
+    id: "5",
     image: portfolio5,
     alt: "Project 5",
     title: "Animated Website",
@@ -162,7 +162,7 @@ export const portfolioItems: PortfolioItem[] = [
     liveLink: "https://example.com",
   },
   {
-    id: 6,
+    id: "6",
     image: portfolio6,
     alt: "Project 6",
     title: "WordPress Site",
