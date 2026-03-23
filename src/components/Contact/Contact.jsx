@@ -1,3 +1,4 @@
+
 import emailjs from "@emailjs/browser";
 import { useCallback, useState } from "react";
 import { personalInfo } from "../../data/portfolioData";
@@ -59,8 +60,9 @@ export default function Contact({ isActive, isBack, isOpen }) {
         toast.success("Mesaj göndərildi! Tezliklə cavab verəcəm.");
         setForm(INITIAL_FORM);
       } catch (err) {
+        console.error(err);
         toast.dismiss(loadingToast);
-        toast.error("Xəta baş verdi. Yenidən cəhd et.");
+        toast.error("✗ Xəta baş verdi. Yenidən cəhd et.");
       } finally {
         setStatus("idle");
       }
