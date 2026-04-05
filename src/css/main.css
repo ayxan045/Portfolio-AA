@@ -267,7 +267,7 @@
 }
 .home .home-img {
   flex: 0 0 40%;
-  max-width: 50%;
+  max-width: 40%;
   text-align: center;
   position: relative;
 }
@@ -1214,12 +1214,6 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-
-.admin-error {
-  color: #ec1839;
-  font-size: 13px;
-  font-weight: 500;
 }
 
 .admin-empty {
